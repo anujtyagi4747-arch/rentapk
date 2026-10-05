@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Rentora — Premium Rental App</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Inter,Arial,sans-serif;
+}
+
+:root{
+--green:#123c35;
+--green2:#1f6758;
+--mint:#e8f4ef;
+--cream:#f7f7f3;
+--dark:#14211e;
+--muted:#7b8581;
+--white:#ffffff;
+}
+
+body{
+background:#dfe5e2;
+color:var(--dark);
+overflow-x:hidden;
+}
+
+button,
+input{
+font:inherit;
+}
+
+.app{
+width:100%;
+max-width:480px;
+min-height:100vh;
+margin:auto;
+background:var(--cream);
+position:relative;
+overflow:hidden;
+box-shadow:0 0 60px rgba(0,0,0,.12);
+}
+
+
+/* =========================
+   COMMON SCREEN
+========================= */
+
+.screen{
+min-height:100vh;
+display:none;
+}
+
+.screen.active{
+display:flex;
+}
+
+
+/* =========================
+   SPLASH SCREEN
+========================= */
+
+#splash{
+background:var(--green);
+color:white;
+align-items:center;
+justify-content:center;
+position:relative;
+overflow:hidden;
+}
+
+.splash-circle{
+position:absolute;
+width:330px;
+height:330px;
+border:1px solid rgba(255,255,255,.12);
+border-radius:50%;
+animation:pulse 4s infinite ease-in-out;
+}
+
+.splash-circle.two{
+width:460px;
+height:460px;
+animation-delay:1s;
+}
+
+.splash-glow{
+position:absolute;
+width:180px;
+height:180px;
+background:#72c5aa;
+filter:blur(90px);
+opacity:.35;
+}
+
+.logo-wrap{
+text-align:center;
+z-index:2;
+animation:logoIn 1s ease forwards;
+}
+
+.logo-icon{
+width:72px;
+height:72px;
+border-radius:24px;
+background:rgba(255,255,255,.12);
+border:1px solid rgba(255,255,255,.2);
+display:flex;
+align-items:center;
+justify-content:center;
+margin:0 auto 20px;
+backdrop-filter:blur(15px);
+}
+
+.logo-icon span{
+font-size:34px;
+}
+
+.logo-wrap h1{
+font-size:38px;
+letter-spacing:-1.8px;
+font-weight:800;
+}
+
+.logo-wrap p{
+margin-top:8px;
+color:#bcd3cb;
+font-size:13px;
+letter-spacing:2px;
+text-transform:uppercase;
+}
+
+.loader{
+position:absolute;
+bottom:70px;
+width:80px;
+height:3px;
+background:rgba(255,255,255,.16);
+border-radius:20px;
+overflow:hidden;
+}
+
+.loader:after{
+content:"";
+display:block;
+height:100%;
+width:40%;
+background:#fff;
+animation:load 1.8s infinite;
+}
+
+
+/* =========================
+   ONBOARDING
+========================= */
+
+#onboard{
+background:var(--cream);
+flex-direction:column;
+position:relative;
+}
+
+.onboard-image{
+height:55vh;
+min-height:390px;
+position:relative;
+overflow:hidden;
+
+background:
+linear-gradient(
+180deg,
+rgba(18,60,53,.04),
+rgba(18,60,53,.72)
+),
+url("https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=900&q=85")
+center/cover;
+}
+
+.onboard-image:after{
+content:"";
+position:absolute;
+bottom:-1px;
+left:-10%;
+width:120%;
+height:80px;
+background:var(--cream);
+border-radius:50% 50% 0 0;
+}
+
+.top-logo{
+position:absolute;
+top:25px;
+left:22px;
+z-index:3;
+font-weight:800;
+color:white;
+font-size:19px;
+}
+
+.skip{
+position:absolute;
+top:22px;
+right:20px;
+border:0;
+background:rgba(255,255,255,.15);
+color:white;
+padding:9px 15px;
+border-radius:30px;
+backdrop-filter:blur(10px);
+cursor:pointer;
+}
+
+.onboard-content{
+padding:0 25px 25px;
+margin-top:-5px;
+position:relative;
+z-index:3;
+}
+
+.badge{
+display:inline-flex;
+background:var(--mint);
+color:var(--green);
+padding:7px 12px;
+border-radius:30px;
+font-size:11px;
+font-weight:700;
+margin-bottom:14px;
+}
+
+.onboard-content h2{
+font-size:32px;
+line-height:1.05;
+letter-spacing:-1.3px;
+}
+
+.onboard-content h2 span{
+color:var(--green2);
+}
+
+.onboard-content p{
+color:var(--muted);
+line-height:1.6;
+font-size:14px;
+margin-top:12px;
+}
+
+.primary{
+width:100%;
+border:0;
+background:var(--green);
+color:white;
+padding:16px;
+border-radius:17px;
+margin-top:20px;
+font-weight:700;
+cursor:pointer;
+box-shadow:0 12px 25px rgba(18,60,53,.18);
+transition:.25s;
+}
+
+.primary:active{
+transform:scale(.97);
+}
+
+
+/* =========================
+   LOGIN SCREEN
+========================= */
+
+#login{
+background:var(--cream);
+flex-direction:column;
+padding:28px 23px;
+}
+
+.back{
+width:42px;
+height:42px;
+border:0;
+border-radius:14px;
+background:white;
+font-size:20px;
+cursor:pointer;
+box-shadow:0 6px 20px rgba(0,0,0,.05);
+}
+
+.login-head{
+margin-top:45px;
+}
+
+.login-head .small-logo{
+width:52px;
+height:52px;
+border-radius:17px;
+background:var(--green);
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-size:25px;
+margin-bottom:22px;
+}
+
+.login-head h2{
+font-size:31px;
+letter-spacing:-1px;
+}
+
+.login-head p{
+margin-top:8px;
+color:var(--muted);
+font-size:14px;
+line-height:1.5;
+}
+
+.form{
+margin-top:30px;
+}
+
+.field{
+margin-bottom:15px;
+}
+
+.field label{
+display:block;
+font-size:12px;
+font-weight:700;
+margin-bottom:7px;
+}
+
+.input-box{
+background:white;
+border:1px solid #e7e9e5;
+border-radius:15px;
+padding:15px;
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.input-box span{
+color:#8b9590;
+}
+
+.input-box input{
+border:0;
+outline:0;
+background:transparent;
+width:100%;
+color:var(--dark);
+}
+
+.divider{
+display:flex;
+align-items:center;
+gap:12px;
+margin:23px 0;
+color:#a0a6a3;
+font-size:11px;
+}
+
+.divider:before,
+.divider:after{
+content:"";
+height:1px;
+background:#dddeda;
+flex:1;
+}
+
+.google{
+width:100%;
+padding:15px;
+background:white;
+border:1px solid #e5e7e4;
+border-radius:15px;
+cursor:pointer;
+font-weight:600;
+}
+
+.login-bottom{
+margin-top:auto;
+text-align:center;
+font-size:12px;
+color:var(--muted);
+padding-bottom:8px;
+}
+
+.login-bottom span{
+color:var(--green);
+font-weight:700;
+}
+
+
+/* =========================
+   HOME HEADER
+========================= */
+
+#home{
+background:#f6f7f3;
+flex-direction:column;
+padding-bottom:82px;
+}
+
+.home-header{
+padding:24px 20px 12px;
+}
+
+.location{
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
+
+.location-left{
+display:flex;
+gap:9px;
+align-items:center;
+}
+
+.location-icon{
+width:35px;
+height:35px;
+border-radius:12px;
+background:var(--mint);
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.location small{
+display:block;
+color:#909894;
+font-size:10px;
+}
+
+.location strong{
+font-size:13px;
+}
+
+.avatar{
+width:40px;
+height:40px;
+border-radius:50%;
+background:
+url("https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=70")
+center/cover;
+border:3px solid white;
+}
+
+.home-title{
+margin-top:25px;
+}
+
+.home-title h2{
+font-size:29px;
+line-height:1.08;
+letter-spacing:-1.1px;
+}
+
+.home-title span{
+color:var(--green2);
+}
+
+.search{
+background:white;
+margin-top:19px;
+padding:7px;
+border-radius:18px;
+display:flex;
+align-items:center;
+box-shadow:0 8px 30px rgba(0,0,0,.06);
+}
+
+.search-icon{
+width:42px;
+height:42px;
+border-radius:13px;
+background:var(--green);
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.search input{
+border:0;
+outline:0;
+background:transparent;
+flex:1;
+padding:0 12px;
+font-size:13px;
+}
+
+.filter-btn{
+border:0;
+width:40px;
+height:40px;
+border-radius:12px;
+background:#f1f3ef;
+cursor:pointer;
+}
+
+.section{
+padding:14px 20px 0;
+}
+
+.section-title{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:13px;
+}
+
+.section-title h3{
+font-size:17px;
+}
+
+.section-title span{
+font-size:11px;
+color:var(--green2);
+font-weight:700;
+}
+
+.categories{
+display:flex;
+gap:10px;
+overflow-x:auto;
+padding-bottom:6px;
+scrollbar-width:none;
+}
+
+.categories::-webkit-scrollbar{
+display:none;
+}
+
+.cat{
+flex:0 0 auto;
+min-width:80px;
+background:white;
+border-radius:17px;
+padding:13px 12px;
+text-align:center;
+border:1px solid #eceee9;
+transition:.2s;
+}
+
+.cat.active{
+background:var(--green);
+color:white;
+border-color:var(--green);
+}
+
+.cat-icon{
+font-size:23px;
+margin-bottom:6px;
+}
+
+.cat small{
+font-size:10px;
+font-weight:700;
+}
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes pulse{
+
+0%,100%{
+transform:scale(.95);
+opacity:.7;
+}
+
+50%{
+transform:scale(1.05);
+opacity:1;
+}
+
+}
+
+@keyframes load{
+
+0%{
+transform:translateX(-100%);
+}
+
+100%{
+transform:translateX(300%);
+}
+
+}
+
+@keyframes logoIn{
+
+from{
+opacity:0;
+transform:translateY(20px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+@keyframes pageIn{
+
+from{
+opacity:0;
+transform:translateY(18px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+.active{
+animation:pageIn .45s ease;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<section id="splash" class="screen active">
+
+<div class="splash-circle"></div>
+
+<div class="splash-circle two"></div>
+
+<div class="splash-glow"></div>
+
+<div class="logo-wrap">
+
+<div class="logo-icon">
+<span>⌂</span>
+</div>
+
+<h1>Rentora</h1>
+
+<p>Find your next place</p>
+
+</div>
+
+<div class="loader"></div>
+
+</section>
+
+
+<section id="onboard" class="screen">
+
+<div class="onboard-image">
+
+<div class="top-logo">
+Rentora
+</div>
+
+<button
+class="skip"
+onclick="showScreen('login')">
+
+Skip
+
+</button>
+
+</div>
+
+<div class="onboard-content">
+
+<div class="badge">
+✦ SMART RENTAL DISCOVERY
+</div>
+
+<h2>
+Find a place<br>
+that feels <span>right.</span>
+</h2>
+
+<p>
+Discover rooms, flats, shops and commercial
+spaces available for rent around you —
+all in one place.
+</p>
+
+<button
+class="primary"
+onclick="showScreen('login')">
+
+Get Started &nbsp; →
+
+</button>
+
+</div>
+
+  </section>
